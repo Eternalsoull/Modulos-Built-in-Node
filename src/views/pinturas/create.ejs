@@ -1,0 +1,72 @@
+<%- include('../layouts/header', { title: 'Create a new pintura' }) %>
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="alert alert-success text-center">Create a new pintura</h1>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <form action="/pinturas" method="post" class="row">
+          <div class="col-6">
+            <label for="titulo" class="form-label">Título</label>
+            <input type="text" name="titulo" id="titulo" class="form-control" required>
+          </div>
+          <div class="form-group col-6">
+            <label for="nombreArtista">Nombre del Artista</label>
+            <input type="text" class="form-control" id="nombreArtista" name="artista.nombre" required>
+          </div>
+          <div class="form-group col-6">
+            <label for="nacimientoArtista">Año de Nacimiento del Artista</label>
+            <input type="number" class="form-control" id="nacimientoArtista" name="artista.nacimiento" required>
+          </div>
+          <div class="form-group col-6">
+            <label for="fallecimientoArtista">Año de Fallecimiento del Artista (opcional)</label>
+            <input type="number" class="form-control" id="fallecimientoArtista" name="artista.fallecimiento">
+          </div>
+
+          <div class="col-6">
+            <label for="fecha_creacion" class="form-label">Fecha de Creación</label>
+            <input type="date" name="fecha_creacion" id="fecha_creacion" class="form-control" required>
+          </div>
+          <div class="col-6">
+            <label for="tecnica" class="form-label">Técnica</label>
+            <input type="text" name="tecnica" id="tecnica" class="form-control" required>
+          </div>
+          <div class="col-6">
+            <label for="alto" class="form-label">Alto (cm)</label>
+            <input type="number" name="alto" id="alto" class="form-control" required>
+          </div>
+          <div class="col-6">
+            <label for="ancho" class="form-label">Ancho (cm)</label>
+            <input type="number" name="ancho" id="ancho" class="form-control" required>
+          </div>
+          <div class="col-6">
+            <label for="estilo" class="form-label">Estilo</label>
+            <input type="text" name="estilo" id="estilo" class="form-control" required>
+          </div>
+          <div class="col-6">
+            <label for="colecciones" class="form-label">Colecciones</label>
+            <input type="text" name="colecciones" id="colecciones" class="form-control" required>
+          </div>
+          <div class="col-6">
+            <label for="criticos" class="form-label">Valoración de Críticos</label>
+            <input type="number" step="0.1" name="criticos" id="criticos" class="form-control" required>
+          </div>
+          <div class="col-6">
+            <label for="usuarios" class="form-label">Valoración de Usuarios</label>
+            <input type="number" step="0.1" name="usuarios" id="usuarios" class="form-control" required>
+          </div>
+          <div class="col-12 d-grid mt-4">
+            <button type="submit" class="btn btn-outline-success">Create</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 d-grid mt-4">
+        <a href="/pinturas" class="btn btn-outline-secondary">Back to Pinturas List</a>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include('../layouts/footer') %>

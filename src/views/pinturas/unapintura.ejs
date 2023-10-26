@@ -1,0 +1,41 @@
+<%- include('../layouts/header', {title: 'pintura list'}) %>
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <h1 class="alert alert-success text-center">Pinturas list</h1>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">titulo</th>
+                  <th scope="col">artista</th>
+                  <th scope="col">fecha_creacion</th>
+                  <th scope="col">tecnica</th>
+                  <th scope="col" class="text-center">dimensiones</th>
+                  <th scope="col" class="text-center">estilo</th>
+                  <th scope="col" class="text-center">colecciones</th>
+                  <th scope="col" class="text-center">valoracion</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                    <th scope="row"><%= pintura.titulo %></th>
+                    <td><%= pintura.artista.nombre %></td>
+                    <td><%= pintura.fecha_creacion %></td>
+                    <td><%= pintura.tecnica %></td>
+                    <td>alto: <%= pintura.dimensiones.alto%>cm ancho:<%= pintura.dimensiones.ancho%>cm  </td>
+                    <td class="text-center"><%= pintura.estilo %></td>
+                    <td class="text-center"><%= pintura.colecciones %></td>
+                    <td class="text-center">criticos: <%= pintura.valoracion.criticos%> usuarios: <%= pintura.valoracion.usuarios%></td>
+                    <td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+<%- include('../layouts/footer') %>
+   

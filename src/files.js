@@ -13,10 +13,12 @@ function readFile(name){
         return [];
     }
 }
-function writeFile(name, data){
+function writeFile(name, data) {
     try{
-        fs.writeFileSync(name, JSON.stringify(data), 'utf8');
+        fs.writeFileSync(name, data);
+        return true;
     }catch(err){
         console.error(err);
+        return false;
     }
 }
