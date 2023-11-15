@@ -1,0 +1,49 @@
+*************CREACIÓN DE LA BASE DE DATOS pinturas*****************
+
+-- Database: pinturas
+
+-- DROP DATABASE IF EXISTS pinturas;
+
+CREATE DATABASE pinturas
+    WITH
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'Spanish_Spain.1252'
+    LC_CTYPE = 'Spanish_Spain.1252'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1
+    IS_TEMPLATE = False;
+
+************CREACIÓN DE LA TABLA pinturas*****************
+
+
+-- Table: public.pinturas
+
+-- DROP TABLE IF EXISTS public.pinturas;
+
+CREATE TABLE IF NOT EXISTS public.pinturas
+(
+    id integer NOT NULL DEFAULT nextval('pinturas_id_seq'::regclass),
+    titulo character varying COLLATE pg_catalog."default" NOT NULL,
+    nombre character varying COLLATE pg_catalog."default" NOT NULL,
+    nacimiento integer NOT NULL,
+    fallecimiento integer NOT NULL,
+    fecha_inicio integer NOT NULL,
+    fecha_fin integer NOT NULL,
+    tecnica character varying COLLATE pg_catalog."default" NOT NULL,
+    altura numeric NOT NULL,
+    anchura numeric NOT NULL,
+    unidad boolean NOT NULL,
+    estilo character varying COLLATE pg_catalog."default" NOT NULL,
+    colecciones character varying COLLATE pg_catalog."default" NOT NULL,
+    valoracion_criticos numeric NOT NULL,
+    valoracion_usuarios numeric NOT NULL,
+    CONSTRAINT pinturas_pkey PRIMARY KEY (id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.pinturas
+    OWNER to postgres;
+
+

@@ -1,4 +1,5 @@
 <%- include('../layouts/header', { title: 'Create a new pintura' }) %>
+
 <div class="container">
   <div class="row">
     <div class="col-12">
@@ -11,34 +12,44 @@
             <label for="titulo" class="form-label">Título</label>
             <input type="text" name="titulo" id="titulo" class="form-control" required>
           </div>
-          <div class="form-group col-6">
-            <label for="nombreArtista">Nombre del Artista</label>
-            <input type="text" class="form-control" id="nombreArtista" name="artista.nombre" required>
-          </div>
-          <div class="form-group col-6">
-            <label for="nacimientoArtista">Año de Nacimiento del Artista</label>
-            <input type="number" class="form-control" id="nacimientoArtista" name="artista.nacimiento" required>
-          </div>
-          <div class="form-group col-6">
-            <label for="fallecimientoArtista">Año de Fallecimiento del Artista (opcional)</label>
-            <input type="number" class="form-control" id="fallecimientoArtista" name="artista.fallecimiento">
-          </div>
-
           <div class="col-6">
-            <label for="fecha_creacion" class="form-label">Fecha de Creación</label>
-            <input type="date" name="fecha_creacion" id="fecha_creacion" class="form-control" required>
+            <label for="nombreArtista">Nombre del Artista</label>
+            <input type="text" class="form-control" id="nombreArtista" name="nombre" required>
+          </div>
+          <div class="col-6">
+            <label for="nacimientoArtista">Año de Nacimiento del Artista</label>
+            <input type="number" class="form-control" id="nacimientoArtista" name="nacimiento" required>
+          </div>
+          <div class="col-6">
+            <label for="fallecimientoArtista">Año de Fallecimiento del Artista (opcional)</label>
+            <input type="number" class="form-control" id="fallecimientoArtista" name="fallecimiento">
+          </div>
+          <div class="col-6">
+            <label for="fecha_inicio" class="form-label">Inicio Fecha de Creación</label>
+            <input type="number" name="fecha_inicio" id="fecha_inicio" class="form-control" required>
+          </div>
+          <div class="col-6">
+            <label for="fecha_fin" class="form-label">Fin Fecha de Creación</label>
+            <input type="number" name="fecha_fin" id="fecha_fin" class="form-control" required>
           </div>
           <div class="col-6">
             <label for="tecnica" class="form-label">Técnica</label>
             <input type="text" name="tecnica" id="tecnica" class="form-control" required>
           </div>
           <div class="col-6">
-            <label for="alto" class="form-label">Alto (cm)</label>
-            <input type="number" name="alto" id="alto" class="form-control" required>
+            <label for="altura" class="form-label">Altura (cm)</label>
+            <input type="number" name="altura"  step="0.01" id="altura" class="form-control" required>
           </div>
           <div class="col-6">
-            <label for="ancho" class="form-label">Ancho (cm)</label>
-            <input type="number" name="ancho" id="ancho" class="form-control" required>
+            <label for="anchura" class="form-label">Ancho (cm)</label>
+            <input type="number" step="0.01" name="anchura" id="anchura" class="form-control" required>
+          </div>
+          <div class="col-6">
+            <label for="unidad" class="form-label">Unidad</label>
+            <select name="unidad" id="unidad" class="form-select" required>
+              <option value="false">cm</option>
+              <option value="true">m</option>
+            </select>
           </div>
           <div class="col-6">
             <label for="estilo" class="form-label">Estilo</label>
@@ -49,12 +60,12 @@
             <input type="text" name="colecciones" id="colecciones" class="form-control" required>
           </div>
           <div class="col-6">
-            <label for="criticos" class="form-label">Valoración de Críticos</label>
-            <input type="number" step="0.1" name="criticos" id="criticos" class="form-control" required>
+            <label for="valoracion_criticos" class="form-label">Valoración de Críticos</label>
+            <input type="number" step="0.1" name="valoracion_criticos" id="valoracion_criticos" class="form-control" required>
           </div>
           <div class="col-6">
-            <label for="usuarios" class="form-label">Valoración de Usuarios</label>
-            <input type="number" step="0.1" name="usuarios" id="usuarios" class="form-control" required>
+            <label for="valoracion_usuarios" class="form-label">Valoración de Usuarios</label>
+            <input type="number" step="0.1" name="valoracion_usuarios" id="valoracion_usuarios" class="form-control" required>
           </div>
           <div class="col-12 d-grid mt-4">
             <button type="submit" class="btn btn-outline-success">Create</button>
@@ -69,4 +80,5 @@
     </div>
   </div>
 </div>
+
 <%- include('../layouts/footer') %>

@@ -1,0 +1,84 @@
+<%- include('../layouts/header', { title: 'Actualizar Pintura' }) %>
+
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="alert alert-success text-center">Actualizar pintura</h1>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <form action="/pinturas/update/<%= pintura.id %>" method="post" class="row">
+          <div class="col-6">
+            <label for="titulo" class="form-label">Título</label>
+            <input type="text" name="titulo" id="titulo" class="form-control"  value="<%= pintura.titulo %>">
+          </div>
+          <div class="col-6">
+            <label for="nombreArtista">Nombre del Artista</label>
+            <input type="text" class="form-control" id="nombreArtista" name="nombre"  value="<%= pintura.nombre %>">
+          </div>
+          <div class="col-6">
+            <label for="nacimientoArtista">Año de Nacimiento del Artista</label>
+            <input type="number" class="form-control" id="nacimientoArtista" name="nacimiento"  value="<%= pintura.nacimiento %>">
+          </div>
+          <div class="col-6">
+            <label for="fallecimientoArtista">Año de Fallecimiento del Artista (opcional)</label>
+            <input type="number" class="form-control" id="fallecimientoArtista" name="fallecimiento"  value="<%= pintura.fallecimiento %>">
+          </div>
+          <div class="col-6">
+            <label for="fecha_inicio" class="form-label">Inicio Fecha de Creación</label>
+            <input type="number" name="fecha_inicio" id="fecha_inicio" class="form-control"  value="<%= pintura.fecha_inicio %>">
+          </div>
+          <div class="col-6">
+            <label for="fecha_fin" class="form-label">Fin Fecha de Creación</label>
+            <input type="number" name="fecha_fin" id="fecha_fin" class="form-control"  value="<%= pintura.fecha_fin %>">
+          </div>
+          <div class="col-6">
+            <label for="tecnica" class="form-label">Técnica</label>
+            <input type="text" name="tecnica" id="tecnica" class="form-control"  value="<%= pintura.tecnica %>">
+          </div>
+          <div class="col-6">
+            <label for="altura" class="form-label">Altura</label>
+            <input type="number" name="altura"  step="0.01" id="altura" class="form-control"  value="<%= pintura.altura %>">
+          </div>
+          <div class="col-6">
+            <label for="anchura" class="form-label">Ancho</label>
+            <input type="number" name="anchura"  step="0.01" id="anchura" class="form-control"  value="<%= pintura.anchura %>">
+          </div>
+          <div class="col-6">
+            <label for="unidad" class="form-label">Unidad</label>
+            <select name="unidad" id="unidad" class="form-select"  >
+              <option value="false">cm</option>
+              <option value="true">m</option>
+            </select>
+          </div>
+          <div class="col-6">
+            <label for="estilo" class="form-label">Estilo</label>
+            <input type="text" name="estilo" id="estilo" class="form-control"  value="<%= pintura.estilo %>">
+          </div>
+          <div class="col-6">
+            <label for="colecciones" class="form-label">Colecciones</label>
+            <input type="text" name="colecciones" id="colecciones" class="form-control"  value="<%= pintura.colecciones %>">
+          </div>
+          <div class="col-6">
+            <label for="valoracion_criticos" class="form-label">Valoración de Críticos</label>
+            <input type="number" step="0.1" name="valoracion_criticos" id="valoracion_criticos" class="form-control"  value="<%= pintura.valoracion_criticos %>" max="5">
+          </div>
+          <div class="col-6">
+            <label for="valoracion_usuarios" class="form-label">Valoración de Usuarios</label>
+            <input type="number" step="0.1" name="valoracion_usuarios" id="valoracion_usuarios" class="form-control" value="<%= pintura.valoracion_usuarios %>" max="5">
+          </div>
+          <div class="col-12 d-grid mt-4">
+            <button type="submit" class="btn btn-outline-success" id="submit-button">Actualizar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 d-grid mt-4">
+        <a href="/pinturas" class="btn btn-outline-secondary">Volver a la lista de pinturas</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../layouts/footer') %>
