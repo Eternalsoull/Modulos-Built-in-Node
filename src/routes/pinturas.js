@@ -29,9 +29,8 @@ router.use(express.json());
 router.get("/", async(req, res) => {
     // let pinturas = readFile(FILE_NAME);
     const {search} = req.query;
-      // if(search){
-      //   pinturas = pinturas.filter(pintura => pintura.titulo.toLowerCase().includes(search.toLowerCase()))
-      // }
+
+      
     
     //crear el archivo acces.json
     // if (!fs.existsSync(FILE_NAME_ACCESS)) {
@@ -49,7 +48,9 @@ router.get("/", async(req, res) => {
 
       //consulta con sequelize
       let pinturas = await models.Pintura.findAll();
-  
+      if(search){
+        pinturas = pinturas.filter(pintura => pintura.titulo.toLowerCase().includes(search.toLowerCase()))
+      }
     res.render("pinturas/index", { pinturas: pinturas, search: search });
   });
 

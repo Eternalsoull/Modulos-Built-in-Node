@@ -30,11 +30,12 @@ router.post("/", validatorHandler(createPinturaSchema, "body"), async (req, res)
 router.put('/:id',  validatorHandler(updatePinturaSchema,"body" ), async(req, res) =>{
 
     const { id } = req.params;
-    const pintura = await models.Pintura.update(req.body, {
+    const data = req.body;
+    await models.Pintura.update(req.body, {
         where: { id: id },
     });
 
-    res.send({'ok': true, pintura: pintura});
+    res.send({'ok': true, pintura: data});
 })
 
 //eliminar pinturas

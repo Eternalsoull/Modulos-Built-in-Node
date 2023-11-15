@@ -1,7 +1,7 @@
 const Joi = require("joi");
 
-const id = Joi.string().uuid(); //utiliza 2 librerias para validar el id: string y uuid
-
+// const id = Joi.string().uuid(); //utiliza 2 librerias para validar el id: string y uuid
+const id = Joi.number().integer(); //utiliza 2 librerias para validar el id: string
 const titulo = Joi.string().min(1).max(200); //utiliza 3 validaciones: minimo 1 caracter, maximo 200 caracteres y tiene que ser un string
 
 const nombre = Joi.string().min(1).max(500); //valida que sea un string, minimo 1 caracter, maximo 500 caracteres y es requerido
