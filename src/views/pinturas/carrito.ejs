@@ -1,0 +1,63 @@
+<%- include('../layouts/header', { title: 'Carrito' }) %>
+
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="alert alert-success text-center">Carrito de Compras</h1>
+    </div>
+    <div class="row">
+      <% carrito.map(pintura => { %>
+        <div class="col-4 mb-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title"><%= pintura.titulo %></h5>
+              <p class="card-text">
+                <img src="<%= pintura.imagen %>" class="img-fluid">
+                <!-- Otros detalles de la pintura -->
+              </p>
+            </div>
+            <form action="/pinturas/eliminar-del-carrito/<%= pintura.id %>" method="post">
+              <button type="submit" class="btn btn-primary">Eliminar del carrito</button>
+            </form>
+          </div>
+        </div>
+      <% }) %>
+
+      <!-- Agrega el formulario de pedido -->
+      <div class="col-12 mt-4">
+        <h2 class="alert alert-info text-center">Datos del Cliente</h2>
+        <form action="/pinturas/realizar-pedido" method="post">
+          <div class="mb-3">
+            <label for="documento" class="form-label">Documento</label>
+            <input type="text" class="form-control" id="documento" name="documento" required>
+          </div>
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" required>
+          </div>
+          <div class="mb-3">
+            <label for="apellidos" class="form-label">Apellidos</label>
+            <input type="text" class="form-control" id="apellidos" name="apellidos" required>
+          </div>
+          <div class="mb-3">
+            <label for="direccion" class="form-label">Dirección</label>
+            <input type="text" class="form-control" id="direccion" name="direccion" required>
+          </div>
+          <div class="mb-3">
+            <label for="telefono" class="form-label">Teléfono</label>
+            <input type="tel" class="form-control" id="telefono" name="telefono" required>
+          </div>
+
+          <!-- Agrega un campo oculto para enviar las pinturas seleccionadas -->
+          <% carrito.map(pintura => { %>
+            <input type="hidden" name="pinturas[]" value="<%= pintura.id %>">
+          <% }) %>
+
+          <button type="submit" class="btn btn-success">Realizar Pedido</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../layouts/footer') %>

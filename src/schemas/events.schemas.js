@@ -3,7 +3,7 @@ const Joi = require("joi");
 // const id = Joi.string().uuid(); //utiliza 2 librerias para validar el id: string y uuid
 const id = Joi.number().integer(); //utiliza 2 librerias para validar el id: string
 const titulo = Joi.string().min(1).max(200); //utiliza 3 validaciones: minimo 1 caracter, maximo 200 caracteres y tiene que ser un string
-
+const imagen = Joi.string().min(1).max(500); //valida que sea un string, minimo 1 caracter, maximo 500 caracteres y es requerido
 const nombre = Joi.string().min(1).max(500); //valida que sea un string, minimo 1 caracter, maximo 500 caracteres y es requerido
 const nacimiento = Joi.date(); //valida que sea una fecha
 const fallecimiento = Joi.date().allow(null); //valida que sea una fecha y permite que sea null
@@ -26,6 +26,7 @@ const valoracion_usuarios = Joi.number().precision(1).min(0).max(5); //valida qu
 //Crear una pintura
 const createPinturaSchema = Joi.object({
   titulo: titulo.required(),
+  imagen: imagen.required(),
     nombre: nombre.required(),
     nacimiento: nacimiento.required(),
     fallecimiento: fallecimiento.optional(),

@@ -4,13 +4,16 @@
   <div class="row">
     <div class="col-12">
       <h1 class="alert alert-success text-center">Create a new pintura</h1>
-    </div>
     <div class="row">
       <div class="col-12">
-        <form action="/pinturas" method="post" class="row">
+        <form action="/pinturas" method="post" enctype="multipart/form-data" class="row">
           <div class="col-6">
             <label for="titulo" class="form-label">Título</label>
             <input type="text" name="titulo" id="titulo" class="form-control" required>
+          </div>
+          <div class="col-6">
+            <label for="imagen" class="form-label">Imagen</label>
+            <input type="text" name="imagen" id="imagen" class="form-control">
           </div>
           <div class="col-6">
             <label for="nombreArtista">Nombre del Artista</label>

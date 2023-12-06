@@ -1,0 +1,51 @@
+<%- include('../layouts/header', { title: 'Principal' }) %>
+
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="alert alert-success text-center">Pinturas List</h1>
+    </div>
+    <div class="row">
+      <form class="row g-3 align-items-center my-3" id="search-form" action="/pinturas" method="get">
+        <div class="col-auto">
+          <label for="search" class="col-form-label">Filtrar por título</label>
+        </div>
+        <div class="col-auto">
+          <input type="text" id="search" name="search" class="form-control" value="<%= search %>">
+        </div>
+        <div class="col-auto">
+          <button type="submit" class="btn btn-outline-secondary">Buscar</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="row">
+      <% pinturas.map(pintura => { %>
+        <div class="col-4 mb-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title"><%= pintura.titulo %></h5>
+              <p class="card-text">
+                <img src="<%= pintura.imagen %>" class="img-fluid">
+                <strong>Nombre del Artista:</strong> <%= pintura.nombre %><br>
+                <strong>Fecha de Creación:</strong> <%= pintura.fecha_inicio %> - <%= pintura.fecha_fin %><br>
+                <strong>Técnica:</strong> <%= pintura.tecnica %><br>
+                <strong>Dimensiones:</strong> Alto: <%= pintura.altura %> <%= pintura.unidad ? 'm' : 'cm' %> Ancho: <%= pintura.anchura %> <%= pintura.unidad ? 'm' : 'cm' %><br>
+                <strong>Estilo:</strong> <%= pintura.estilo %><br>
+                <strong>Colecciones:</strong> <%= pintura.colecciones %><br>
+                <strong>Valoración:</strong> Críticos: <%= pintura.valoracion_criticos %> Usuarios: <%= pintura.valoracion_usuarios %>
+              </p>
+              <form action="/pinturas/agregar-al-carrito/<%= pintura.id %>" method="post">
+                <button type="submit" class="btn btn-primary">Agregar al carrito</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</div>
+
+
+
+<%- include('../layouts/footer') %>

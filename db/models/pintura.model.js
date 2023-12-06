@@ -12,24 +12,28 @@ const pinturaSchema = {
         type: DataTypes.STRING,
         allowNull: false
     },
+    imagen: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
     nombre: {
         type: DataTypes.STRING,
         allowNull: false
     },
     nacimiento: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     fallecimiento: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     fecha_inicio: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     fecha_fin: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     tecnica: {
@@ -37,11 +41,11 @@ const pinturaSchema = {
         allowNull: false
     },
     altura: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.DECIMAL,
         allowNull: false
     },
     anchura: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.DECIMAL,
         allowNull: false
     },
     unidad: {
@@ -57,11 +61,11 @@ const pinturaSchema = {
         allowNull: false
     },
     valoracion_criticos: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.DECIMAL,
         allowNull: false
     },
     valoracion_usuarios: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.DECIMAL,
         allowNull: false
     }
 };
@@ -69,6 +73,7 @@ const pinturaSchema = {
 class PinturaModel extends Model{
     static associate(models){
         // this.belongsTo(models.UserModel, {foreignKey: 'user:id', as: 'User'});
+        this.belongsToMany(models.PedidoModel, { through: 'PedidoPintura', foreignKey: 'pinturaId' });
     }
 
     static config(sequelize){ //envia la conexion a la base de datos

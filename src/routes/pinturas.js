@@ -8,107 +8,167 @@ const {
 
 const express = require("express");
 const router = express.Router();
-const { v4: uuidv4 } = require("uuid"); //importamos el modulo de node para generar ids unicos
 const { models } = require("../libs/sequelize"); //importamos el modelo de la base de datos
-const fs = require("fs"); 
-const moment = require('moment');
-const Swal = require('sweetalert2')
+const multer = require('multer');
+const path = require('path'); 
 
-//modulos internos
-const { readFile, writeFile, writeFileAccess } = require("../files.js");
-const FILE_NAME = "./db/pinturas.txt";
-const FILE_NAME_ACCESS = "./db/acces.json"; 
 
 //mIDDlEWARE
-router.use(express.urlencoded({ extend: false }));
+router.use(express.urlencoded({ extend: false })); 
 router.use(express.json());
 
+//importa rle controlador de eventos
+const service = require('../services/pinturas.service.js');
 
-//WEB
-    //Listar pinturas
-router.get("/", async(req, res) => {
-    // let pinturas = readFile(FILE_NAME);
-    const {search} = req.query;
+// Configura multer para gestionar la subida de archivos
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+      cb(null, '..', 'images');
+  },
+  filename: function (req, file, cb) {
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+      const extension = path.extname(file.originalname);
+      cb(null, file.fieldname + '-' + uniqueSuffix + extension);
+  },
+});
 
-      
-    
-    //crear el archivo acces.json
-    // if (!fs.existsSync(FILE_NAME_ACCESS)) {
-    //   writeFileAccess(FILE_NAME_ACCESS, '[]');
-    // }
+const upload = multer({ storage: storage });
+
+//ruta para mostrar la vista de carrito
+router.get("/carrito", async (req, res) => {
+  const carrito = await service.getCarrito();
+  res.render("pinturas/carrito", { carrito: carrito });
+});
+
+
+router.post("/agregar-al-carrito/:id", async (req, res) => {
+  const pinturaId = req.params.id;
+  await service.agregarCarrito(pinturaId);
+  res.redirect("/pinturas/carrito");
+});
+
+//ruta para eliminar una pintura del carrito
+router.post("/eliminar-del-carrito/:id", async (req, res) => {
+  const pinturaId = req.params.id;
+  await service.eliminarCarrito(pinturaId);
+  res.redirect("/pinturas/carrito");
+}); 
+
+// Ruta para procesar el formulario de pedido
+router.post("/realizar-pedido", async (req, res) => {
+  const { documento, nombre, apellidos, direccion, telefono, pinturas } = req.body;
   
-      // const acces = readFile(FILE_NAME_ACCESS); 
-      // const currentTime = moment().format('YYYY-MM-DD HH:mm:ss');
-      // const method = req.method;
-      
-      // acces.push([currentTime, method, "Listar pinturas", req.url]);
-      // const accesJson = JSON.stringify(acces);
-      
-      // writeFileAccess(FILE_NAME_ACCESS, accesJson); 
+  // Crea la orden en la base de datos
+  const orden = await service.crearOrden({ documento, nombre, apellidos, direccion, telefono, pinturas });
 
-      //consulta con sequelize
-      let pinturas = await models.Pintura.findAll();
-      if(search){
-        pinturas = pinturas.filter(pintura => pintura.titulo.toLowerCase().includes(search.toLowerCase()))
-      }
-    res.render("pinturas/index", { pinturas: pinturas, search: search });
+  // Elimina el carrito
+  await service.limpiarCarrito();
+  
+  res.redirect("/pinturas?mensaje=pedido-realizado");
+});
+
+//middleware para autenticar
+router.use((req, res, next) => {
+  if(req.user || req.path === '/principal') {
+    res.locals.user = req.user;
+    next();
+  } else {
+    res.redirect('/pinturas/principal')
+  }
+});
+
+
+
+  router.get("/principal", async(req, res) => {
+    const pinturas = await service.getPinturas();
+  const {search} = req.query;
+  if(search){
+    pinturas = pinturas.filter(pintura => pintura.titulo.toLowerCase().includes(search.toLowerCase()))
+  }
+  res.render("pinturas/principal", { pinturas: pinturas, search: search }); 
   });
+  
 
-//Crear pinturas
+
+//Definimos las rutas
+//Listar pinturas
+router.get("/", async(req, res) => {
+  const pinturas = await service.getPinturas();
+  const {search} = req.query;
+  if(search){
+    pinturas = pinturas.filter(pintura => pintura.titulo.toLowerCase().includes(search.toLowerCase()))
+  }
+  res.render("pinturas/index", { pinturas: pinturas, search: search }); 
+});
+
+//ruta para mostrar la vista de crear pintura
 router.get("/create", (req, res) => {
-
   res.render("pinturas/create");
 });
-  //crear pinturas
-router.post("/", validatorHandler(createPinturaSchema, "body"), async (req, res) => {
+
+//ruta para crear una pintura con service y sequelize
+router.post("/", upload.single('imagen'), validatorHandler(createPinturaSchema, "body"), async (req, res) => {
   try {
-    // const data = readFile(FILE_NAME);
-    // const newPintura = req.body;
+      const newPintura = req.body;
 
-    // newPintura.id = uuidv4();
-    // console.log(newPintura);
-    // console.log(data);
-    // data.push(newPintura);
+      // Agrega la ruta de la imagen al objeto de la pintura
+      // newPintura.imagen = req.file.filename;
 
-    // writeFile(FILE_NAME, data);
-    // res.json({ message: "La pintura fue creada con exito" });
+      // Guarda la pintura en la base de datos
+      const pintura = await service.store(newPintura);
 
-    //consulta con sequelize
-    const newPintura = await models.Pintura.create(req.body);
-    res.redirect("/pinturas");
+      res.redirect("/pinturas?mensaje=creado");
   } catch (err) {
-    console.error(err);
-    res.json({ message: "Error al crear la pintura" });
+      console.error(err);
+      res.status(500).json({ message: "Error al crear la pintura" });
   }
-}
-);
-  //Eliminar una pintura
-  router.post("/delete/:id", (req, res) => {
-    //:id porque es un parametro
-    // console.log(req.params.id);
-    // //Guardamos el id que viene en la url
-    // const id = req.params.id;
-    // //leer el archivo de pinturas
-    // const pinturas = readFile(FILE_NAME);
-    // //buscar la pintura con el id que recibimos
-    // const pinturaIndex = pinturas.findIndex((pintura) => pintura.id === id);
-    // if (pinturaIndex < 0) {
-    //   res.status(404).json({ ok: false, message: "pintura not found" });
-    //   return;
-    // }
-    // //Eliminar la pintura que esté en la posicion pinturaIndex
-    // pinturas.splice(pinturaIndex, 1);
-    // writeFile(FILE_NAME, pinturas);
+});
 
-    //consulta con sequelize
-    models.Pintura.destroy({
-      where: {
-        id: req.params.id
-      }
-    });
+//ruta para mostrar la vista de actualizar pintura
+router.get("/update/:id", validatorHandler(getPinturaSchema, "params"), async(req, res) => {
+  const pintura = await service.update(req.params.id);
+  res.render("pinturas/update", { pintura: pintura });
+});
 
-    res.redirect("/pinturas?mensaje=eliminado");
-  });
+//ruta para eliminar una pintura
+router.post("/delete/:id", validatorHandler(getPinturaSchema, "params"), async(req, res) => {
+  const pintura = await service.destroy(req.params.id);
+  res.redirect("/pinturas?mensaje=eliminado");
+});
+
+
+
+
+
+
+
+  // //Eliminar una pintura
+  // router.post("/delete/:id", (req, res) => {
+  //   //:id porque es un parametro
+  //   // console.log(req.params.id);
+  //   // //Guardamos el id que viene en la url
+  //   // const id = req.params.id;
+  //   // //leer el archivo de pinturas
+  //   // const pinturas = readFile(FILE_NAME);
+  //   // //buscar la pintura con el id que recibimos
+  //   // const pinturaIndex = pinturas.findIndex((pintura) => pintura.id === id);
+  //   // if (pinturaIndex < 0) {
+  //   //   res.status(404).json({ ok: false, message: "pintura not found" });
+  //   //   return;
+  //   // }
+  //   // //Eliminar la pintura que esté en la posicion pinturaIndex
+  //   // pinturas.splice(pinturaIndex, 1);
+  //   // writeFile(FILE_NAME, pinturas);
+
+  //   //consulta con sequelize
+  //   models.Pintura.destroy({
+  //     where: {
+  //       id: req.params.id
+  //     }
+  //   });
+
+  //   res.redirect("/pinturas?mensaje=eliminado");
+  // });
   
   //Actualizar una pintura
   router.get("/update/:id", validatorHandler(updatePinturaSchema, "body"), (req, res) => {
@@ -176,4 +236,5 @@ router.post("/", validatorHandler(createPinturaSchema, "body"), async (req, res)
     
   });
 
+  
 module.exports = router;
