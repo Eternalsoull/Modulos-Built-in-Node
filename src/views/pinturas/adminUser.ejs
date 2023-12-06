@@ -1,0 +1,47 @@
+<%- include('../layouts/header', { title: 'Usuarios' }) %>
+
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="alert alert-success text-center">Lista de Usuarios</h1>
+    </div>
+
+    <div class="col-12 mt-4">
+    <div class="col-12 mt-4">
+      <!-- Lista de usuarios -->
+      <h2 class="alert alert-info text-center">Lista de Usuarios</h2>
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Nombre de Usuario</th>
+            <th scope="col">Correo Electrónico</th>
+            <th scope="col" class="text-center">Eliminar</th>
+            <th scope="col" class="text-center">Actualizar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% users.map(user => {%>
+          <tr>
+            <td><%= user.id %></td>
+            <td><%= user.username %></td>
+            <td><%= user.email %></td>
+              <!-- Formulario para eliminar un usuario -->
+              <td class="text-center">
+                <form action="/pinturas/usuarios/delete/<%= user.id %>" method="post" onsubmit="return confirm('¿Estás seguro de que quieres eliminar esta pintura?')">
+                  <button type="submit" class="btn btn-outline-danger">❌</button>
+                </form>
+              </td>
+            <!-- Formulario para actualizar un usuario -->
+            <td class="text-center">
+              <a href="/pinturas/usuarios/update/<%= user.id %>" class="btn btn-outline-danger">✏️</a>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<%- include('../layouts/footer') %>

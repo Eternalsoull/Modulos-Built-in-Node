@@ -78,6 +78,27 @@ function limpiarCarrito() {
     }
 
 
+    async function getUsuarios() {
+        const usuarios = await models.User.findAll();
+        return usuarios;
+      }
+
+      //funcion para eliminar usuario
+async function eliminarUsuario(id) {
+    const usuario = await models.User.findByPk(id);
+    usuario.destroy();
+    return usuario;
+  }
+
+    //funcion para actualizar usuario
+async function actualizarUsuario(id, body) {
+    const usuario = await models.User.findByPk(id);
+    usuario.update(body);
+    return usuario;
+  }
+
+
+
 
 module.exports = {
   getPinturas,
@@ -88,5 +109,8 @@ module.exports = {
     eliminarCarrito,
     getCarrito,
     crearOrden,
-    limpiarCarrito
+    limpiarCarrito,
+    getUsuarios,
+    eliminarUsuario,
+    actualizarUsuario
 };

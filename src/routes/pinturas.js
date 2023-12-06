@@ -194,36 +194,6 @@ router.post("/delete/:id", validatorHandler(getPinturaSchema, "params"), async(r
   });
   
   router.post("/update/:id", (req, res) => {
-    // //:id porque es un parametro
-    // console.log(req.params.id);
-    // //Guardamos el id que viene en la url
-    // const id = req.params.id;
-    // //leer el archivo de pinturas
-    // const pinturas = readFile(FILE_NAME);
-    // //buscar la pintura con el id que recibimos
-    // const pinturaFound = pinturas.find((pintura) => pintura.id === id); //
-    // if (!pinturaFound) {
-    //   res.status(404).json({ ok: false, message: "pintura not found" });
-    //   return;
-    // }
-    // //actualizar la pintura
-    // pinturaFound.titulo = req.body.titulo;
-    // pinturaFound.nombre = req.body.nombre;
-    // pinturaFound.nacimiento = req.body.nacimiento;
-    // pinturaFound.fallecimiento = req.body.fallecimiento;
-    // pinturaFound.fecha_inicio = req.body.fecha_inicio;
-    // pinturaFound.fecha_fin = req.body.fecha_fin;
-    // pinturaFound.tecnica = req.body.tecnica;
-    // pinturaFound.altura = req.body.altura;
-    // pinturaFound.anchura = req.body.anchura;
-    // pinturaFound.unidad = req.body.unidad;
-    // pinturaFound.estilo = req.body.estilo;
-    // pinturaFound.colecciones = req.body.colecciones;
-    // pinturaFound.valoracion_criticos = req.body.valoracion_criticos;
-    // pinturaFound.valoracion_usuarios = req.body.valoracion_usuarios;
-    // //guardar el archivo
-    // writeFile(FILE_NAME, pinturas);
-
     //consulta con sequelize
     models.Pintura.update(req.body, {
       where: {
@@ -236,5 +206,24 @@ router.post("/delete/:id", validatorHandler(getPinturaSchema, "params"), async(r
     
   });
 
+  //listar usuarios
+  router.get("/usuarios", async(req, res) => {
+    const users = await service.getUsuarios();
+    res.render("pinturas/adminUser", { users: users });
+  });
+
+  //Eliminar un usuario
+  router.post("/usuarios/delete/:id", async(req, res) => {
+
+    const eliminar = await service.eliminarUsuario(req.params.id);
+
+    res.redirect("/pinturas/usuarios?mensaje=eliminado");
+  });
+
+  //Actualizar un usuario
+  router.get("/usuarios/update/:id", async(req, res) => {
+    const user = await service.actualizarUsuario(req.params.id);
+    res.render("pinturas/updateUser", { user: user });
+  });
   
 module.exports = router;
